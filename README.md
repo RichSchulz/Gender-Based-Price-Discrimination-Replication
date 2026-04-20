@@ -19,8 +19,13 @@ We analyze pricing data from Treatwell, a major European beauty services marketp
 │   ├── analyze_treatment_ids.py  # Treatment category analysis
 │   ├── analysis-new.ipynb   # Main regression analysis
 │   └── analysis-more-countries.ipynb  # Extended multi-country analysis
+├── working paper.pdf        # Current working paper draft
 └── README.md
 ```
+
+## Working Paper
+
+The current working paper draft is included as [`working paper.pdf`](working%20paper.pdf).
 
 ## Requirements
 

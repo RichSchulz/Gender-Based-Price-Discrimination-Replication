@@ -23,7 +23,25 @@ env/
 .idea/
 *.swp
 *.swo
+.claude/
 
-# Data files (too large for git)
-data/*.csv
+# Data outputs
+data/**/*.csv
 !data/README.md
+!data/snapshots/README.md
+!data/derived/README.md
+!data/audits/README.md
+!data/final/README.md
+
+# LaTeX and generated bundles
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.blg
+*.bbl
+*.zip
+*.pdf

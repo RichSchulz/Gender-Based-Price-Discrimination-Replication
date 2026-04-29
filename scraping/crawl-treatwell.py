@@ -4,7 +4,12 @@ import json
 import pandas as pd
 import argparse
 from datetime import datetime
+from pathlib import Path
 from typing import Literal
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SNAPSHOTS_DIR = ROOT / "data" / "snapshots"
 
 
 def get_url(
@@ -76,6 +81,7 @@ headers = {
 
 
 def adults():
+    SNAPSHOTS_DIR.mkdir(parents=True, exist_ok=True)
     all_results = {"male": [], "female": []}
 
     for country in countries:
@@ -162,15 +168,20 @@ def adults():
 
     df = pd.DataFrame(formatted_results)
 
-    df.to_csv(f"../data/treatwell-all-{datetime.today().strftime('%Y-%m-%d')}.csv", index=False)
+    df.to_csv(
+        SNAPSHOTS_DIR / f"treatwell-all-{datetime.today().strftime('%Y-%m-%d')}.csv",
+        index=False,
+    )
     df = df.drop("raw", axis=1)
     df.to_csv(
-        f"../data/treatwell_without_raw-all-{datetime.today().strftime('%Y-%m-%d')}.csv",
+        SNAPSHOTS_DIR
+        / f"treatwell_without_raw-all-{datetime.today().strftime('%Y-%m-%d')}.csv",
         index=False,
     )
 
 
 def kids():
+    SNAPSHOTS_DIR.mkdir(parents=True, exist_ok=True)
     all_results = []
     for country in countries:
         genders = ["boys", "girls"] if country in ["pt"] else ["boys"]
@@ -249,11 +260,13 @@ def kids():
                 )
     df = pd.DataFrame(formatted_results)
     df.to_csv(
-        f"../data/treatwell_kids-{datetime.today().strftime('%Y-%m-%d')}.csv", index=False
+        SNAPSHOTS_DIR / f"treatwell_kids-{datetime.today().strftime('%Y-%m-%d')}.csv",
+        index=False,
     )
     df = df.drop("raw", axis=1)
     df.to_csv(
-        f"../data/treatwell_without_raw_kids-{datetime.today().strftime('%Y-%m-%d')}.csv",
+        SNAPSHOTS_DIR
+        / f"treatwell_without_raw_kids-{datetime.today().strftime('%Y-%m-%d')}.csv",
         index=False,
     )
 

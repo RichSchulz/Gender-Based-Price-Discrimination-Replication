@@ -1,99 +1,86 @@
 # Gender-Based Price Discrimination in Personal Care Services: Replication Package
 
-This repository contains the code and documentation to replicate the analysis in our study of gender-based price discrimination in haircut services across European markets.
+This repository contains the scraping and analysis code needed to reproduce the paper's empirical workflow without redistributing platform data.
 
-## Overview
+## Repository Map
 
-We analyze pricing data from Treatwell, a major European beauty services marketplace, to examine whether salons charge different prices for equivalent services based on the customer's gender (the "Pink Tax" phenomenon).
+- `analysis/`: core analysis scripts, robustness checks, and notebooks.
+- `scraping/`: Treatwell collection scripts for adult, children, and venue metadata.
+- `paper/`: generated LaTeX table inputs and lightweight paper workflow notes.
+- `data/`: empty directory structure plus documentation for where locally generated files belong.
 
-## Repository Structure
+## Data Policy
 
-```
-.
-├── data/                    # Data files (see data/README.md)
-├── scraping/                # Data collection scripts
-│   ├── crawl-treatwell.py   # Main scraping script for haircut data
-│   └── scrape-venue-info.py # Venue metadata collection
-├── analysis/                # Analysis code
-│   ├── utils.py             # Helper functions and filter words
-│   ├── analyze_treatment_ids.py  # Treatment category analysis
-│   ├── analysis-new.ipynb   # Main regression analysis
-│   └── analysis-more-countries.ipynb  # Extended multi-country analysis
-├── working paper.pdf        # Current working paper draft
-└── README.md
-```
+Treatwell data are not included here. The platform's Terms of Service do not permit redistribution of the scraped datasets or raw API payloads.
 
-## Working Paper
+The package therefore includes:
 
-The current working paper draft is included as [`working paper.pdf`](working%20paper.pdf).
+- code
+- notebooks
+- table-generation scripts
+- generated LaTeX table files
+- directory-level documentation
 
-## Requirements
+The package does not include:
 
-### Python Dependencies
+- raw platform extracts
+- cleaned CSV snapshots
+- venue-response dumps
+- derived audit CSVs
+
+## Python Requirements
+
+Install the main dependencies with:
 
 ```bash
 pip install pandas numpy scipy statsmodels requests reverse_geocoder stargazer jupyter
 ```
 
-## Replication Steps
+## Replication Workflow
 
-### 1. Data Collection
-
-```bash
-# Collect haircut pricing data from Treatwell
-cd scraping
-python crawl-treatwell.py
-
-# Collect venue metadata
-python scrape-venue-info.py
-```
-
-**Note:** Data collection requires approximately 24-48 hours due to rate limiting. The scraping scripts are designed to be resumable if interrupted.
-
-### 2. Data Analysis
+### 1. Collect raw data locally
 
 ```bash
-# Analyze treatment categories
-cd analysis
-python analyze_treatment_ids.py
-
-# Run regression analysis
-jupyter notebook analysis-more-countries.ipynb
+python scraping/crawl-treatwell.py
+python scraping/crawl-treatwell.py --kids
+python scraping/scrape-venue-info.py
 ```
 
-## Key Variables
+These scripts write dated files into `data/snapshots/`.
 
-| Variable | Description |
-|----------|-------------|
-| `is_female` / `is_male` | Gender category of the haircut service |
-| `simpleCutSalePrice` | Listed price in local currency |
-| `simpleCutDurationMin/Max` | Service duration range |
-| `averageRating` | Venue's average customer rating |
-| `ratingCount` | Number of customer reviews |
+### 2. Build intermediate analysis inputs
 
-## Data Availability
-
-Due to Treatwell's Terms of Service, we cannot publicly share the scraped data. Researchers wishing to replicate our analysis should:
-
-1. Use the provided scraping scripts to collect their own data
-2. Contact the authors for access to anonymized summary statistics
-
-## Citation
-
-If you use this code, please cite:
-
-```bibtex
-@article{schulz2025pinktax,
-  title={Gender-Based Price Discrimination in Personal Care Services: Evidence from European Haircut Markets},
-  author={Schulz, Richard},
-  year={2025}
-}
+```bash
+python analysis/analyze_treatment_ids.py
 ```
 
-## License
+This writes `data/derived/treatment_ids_analysis.csv`.
 
-MIT License - see LICENSE file for details.
+### 3. Rebuild paper tables and diagnostics
 
-## Contact
+```bash
+python analysis/generate_paper_tables.py
+python analysis/country_heterogeneity_check.py
+python analysis/matched_category_robustness.py
+python analysis/structured_option_subsample.py
+python analysis/linearity_check.py
+```
 
-For questions about replication, please open an issue or contact the authors.
+Generated outputs are written to:
+
+- `paper/tables/`
+- `data/derived/`
+- `data/audits/`
+
+### 4. Inspect notebook analyses
+
+The repository also includes:
+
+- `analysis/analysis-new.ipynb`
+- `analysis/analysis-more-countries.ipynb`
+
+These notebooks are retained for transparency, but the scripted workflow above is the cleaner replication path.
+
+## Notes On Scope
+
+This package intentionally excludes internal review artifacts, scratch notebooks, local machine paths, and restricted data files.

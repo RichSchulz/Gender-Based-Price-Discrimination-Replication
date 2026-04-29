@@ -275,9 +275,12 @@ def get_country_from_df(venue_id: int, results_df: pd.DataFrame) -> Optional[str
 def main():
     # Setup directories
     script_dir = Path(__file__).parent
+    data_dir = script_dir.parent / "data"
+    snapshots_dir = data_dir / "snapshots"
+    snapshots_dir.mkdir(parents=True, exist_ok=True)
     
     # Read the dataset
-    csv_file = script_dir / ".." / "data" / "treatwell_without_raw-all-2025-06-02.csv"
+    csv_file = snapshots_dir / "treatwell_without_raw-all-2025-06-02.csv"
     print(f"Reading dataset from {csv_file}")
     df = pd.read_csv(csv_file, low_memory=False)
     
@@ -287,7 +290,7 @@ def main():
     print(f"Found {total_venues} unique venues")
     
     # Check for existing results to resume
-    results_file = script_dir / ".." / "data" / f"venue_info-{datetime.today().strftime('%Y-%m-%d')}.csv"
+    results_file = snapshots_dir / f"venue_info-{datetime.today().strftime('%Y-%m-%d')}.csv"
     existing_df = None
     existing_venue_ids = set()
     if results_file.exists():
@@ -404,4 +407,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

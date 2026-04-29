@@ -19,6 +19,7 @@ from collections import defaultdict
 from typing import Dict, List, Set, Tuple
 import sys
 import os
+from pathlib import Path
 
 # Import filter words from utils.py
 # Suppress the print statement in utils.py by redirecting stdout temporarily
@@ -32,6 +33,10 @@ try:
 except ImportError:
     print("Warning: Could not import utils.py. Filter words will not be available.")
     filter_words = []
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = ROOT / "data"
 
 
 # Known treatment category IDs
@@ -531,7 +536,8 @@ def analyze_treatment_ids(csv_path: str, chunk_size: int = 1000, min_count: int 
         print("  None found - all IDs have a single cut type.")
     
     # Save to CSV (flatten sample_names lists - only German names)
-    output_path = "../data/treatment_ids_analysis.csv"
+    output_path = DATA_DIR / "derived" / "treatment_ids_analysis.csv"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     csv_data = []
     for item in summary_data:
         csv_data.append({
@@ -576,8 +582,8 @@ Examples:
     parser.add_argument(
         "csv_path",
         nargs="?",
-        default="../data/treatwell-all-2025-06-02.csv",
-        help="Path to CSV file (default: ../data/treatwell-all-2025-06-02.csv)"
+        default=str(DATA_DIR / "snapshots" / "treatwell-all-2025-06-02.csv"),
+        help="Path to CSV file (default: data/snapshots/treatwell-all-2025-06-02.csv)"
     )
     parser.add_argument(
         "--min-count",
@@ -598,4 +604,3 @@ Examples:
         import traceback
         traceback.print_exc()
         sys.exit(1)
-

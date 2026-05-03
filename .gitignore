@@ -30,7 +30,6 @@ data/**/*.csv
 !data/README.md
 !data/snapshots/README.md
 !data/derived/README.md
-!data/audits/README.md
 !data/final/README.md
 
 # LaTeX and generated bundles

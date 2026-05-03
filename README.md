@@ -1,12 +1,12 @@
-# Gender-Based Price Discrimination in Personal Care Services: Replication Package
+# Gender Pricing and Service Duration: Evidence from European Salons — Replication Package
 
-This repository contains the scraping and analysis code needed to reproduce the paper's empirical workflow without redistributing platform data.
+This repository contains the scraping and analysis code needed to reproduce the empirical workflow for the paper *Gender Pricing and Service Duration: Evidence from European Salons* without redistributing platform data.
 
 ## Repository Map
 
-- `analysis/`: core analysis scripts, robustness checks, and notebooks.
+- `analysis/`: scripts required to regenerate the paper tables.
 - `scraping/`: Treatwell collection scripts for adult, children, and venue metadata.
-- `paper/`: generated LaTeX table inputs and lightweight paper workflow notes.
+- `paper/`: generated LaTeX table inputs used by the paper.
 - `data/`: empty directory structure plus documentation for where locally generated files belong.
 
 ## Data Policy
@@ -16,7 +16,6 @@ Treatwell data are not included here. The platform's Terms of Service do not per
 The package therefore includes:
 
 - code
-- notebooks
 - table-generation scripts
 - generated LaTeX table files
 - directory-level documentation
@@ -48,39 +47,17 @@ python scraping/scrape-venue-info.py
 
 These scripts write dated files into `data/snapshots/`.
 
-### 2. Build intermediate analysis inputs
-
-```bash
-python analysis/analyze_treatment_ids.py
-```
-
-This writes `data/derived/treatment_ids_analysis.csv`.
-
-### 3. Rebuild paper tables and diagnostics
+### 2. Rebuild paper tables
 
 ```bash
 python analysis/generate_paper_tables.py
-python analysis/country_heterogeneity_check.py
-python analysis/matched_category_robustness.py
-python analysis/structured_option_subsample.py
-python analysis/linearity_check.py
 ```
 
 Generated outputs are written to:
 
 - `paper/tables/`
 - `data/derived/`
-- `data/audits/`
-
-### 4. Inspect notebook analyses
-
-The repository also includes:
-
-- `analysis/analysis-new.ipynb`
-- `analysis/analysis-more-countries.ipynb`
-
-These notebooks are retained for transparency, but the scripted workflow above is the cleaner replication path.
 
 ## Notes On Scope
 
-This package intentionally excludes internal review artifacts, scratch notebooks, local machine paths, and restricted data files.
+This package intentionally excludes internal review artifacts, scratch notebooks, exploratory diagnostics, local machine paths, and restricted data files.

@@ -5,8 +5,7 @@ This replication package does not ship Treatwell data. Generate all files locall
 ## Directory Layout
 
 - `data/snapshots/`: dated scraper outputs and venue metadata files.
-- `data/derived/`: regenerated intermediate analysis files.
-- `data/audits/`: diagnostic samples and audit outputs from robustness scripts.
+- `data/derived/`: regenerated intermediate analysis files required by the paper table workflow.
 - `data/final/`: reserved for curated, reproducibility-critical local inputs if needed later.
 
 ## Expected Snapshot Files
@@ -19,9 +18,7 @@ This replication package does not ship Treatwell data. Generate all files locall
 
 ## Expected Derived Files
 
-- `treatment_ids_analysis.csv`
 - `matched_category_model_summary.json`
-- `matched_category_summary.csv`
 
 ## Terms Of Service
 
